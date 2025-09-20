@@ -4,6 +4,10 @@ import io
 import urllib, base64
 from django.shortcuts import render
 from django.http import HttpResponse
+from openai import OpenAI
+import numpy as np
+import os
+from dotenv import load_dotenv
 
 from .models import Movie
 

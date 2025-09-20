@@ -1,0 +1,38 @@
+{%extends 'base.html'%}
+{%block content%}
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+
+<div class="container">
+    <h2>Movie Recommendations</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="prompt" class="form-label">Describe the movie you are looking for:</label>
+            <input type="text" class="form-control" id="prompt" name="prompt" required style="width: 400px;">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <p>Searching for: {{ prompt }}</p>
+
+    {% if best_movie %}
+        <h3>Recommended Movie:</h3>
+        <div class="card" style="max-width: 400px; margin-top: 20px;">
+            <img src="{{ best_movie.image.url }}" class="card-img-top" alt="Imagen de la película">
+            <div class="card-body">
+                <h5 class="card-title">{{ best_movie.title }}</h5>
+                <p class="card-text">{{ best_movie.description }}</p>
+                <p class="card-text"><strong>Género:</strong> {{ best_movie.genre }}</p>
+                <p class="card-text"><strong>Año:</strong> {{ best_movie.year }}</p>
+                {% if best_movie.url %}
+                <a href="{{ best_movie.url }}" class="btn btn-primary">Enlace</a>
+                {% endif %}
+                <p class="card-text"><strong>Similitud:</strong> {{ similarity|floatformat:4 }}</p>
+            </div>
+        </div>
+    {% elif prompt %}
+        <p>No similar movie found.</p>
+    {% endif %}
+</div>
+{% endblock content %}
